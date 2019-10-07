@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const Product = require('./models/product');
+const productCtrl = require ('./controllers/product');
 
 const app = express()
 const port = process.env.PORT || 3000;
@@ -17,15 +17,7 @@ app.use(bodyParser.json());
 
 //RUTAS
 
-app.get('/api/product', (req, res) => {
-    Product.find({}, (err, products) => {
-        if (err) return res.status(500).send({ message: `Error al realizar la petición: ${err}` });
-        if (!products) return res.status(404).send({ message: 'No existen productos' });
-
-        res.send(200, { products })
-
-    })
-})
+app.get('/api/product',productCtrl.getProducts);
 
 app.get('/api/product/:productId', (req, res) => {
     let productId = req.params.productId;
